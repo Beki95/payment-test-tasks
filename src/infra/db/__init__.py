@@ -1,1 +1,1 @@
-from src.infra.db.users import User
+from src.infra.db.tables.users import User
