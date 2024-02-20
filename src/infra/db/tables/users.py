@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 
-from src.infra.db.common import Base
+from src.infra.db.tables.common import Base
 
 
 class User(Base):
