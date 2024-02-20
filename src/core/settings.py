@@ -9,6 +9,8 @@ load_dotenv()
 class Settings(BaseSettings):
     POSTGRES_URI = environ.get('POSTGRES_URI')
     SECRET_KEY = environ.get('SECRET_KEY')
+    EXPIRE_MINUTES: int = environ.get('EXPIRE_MINUTES', default=5)
+    ALGORITHM = environ.get('ALGORITHM')
 
 
 settings = Settings()
