@@ -17,6 +17,7 @@ psycopg2-binary = "^2.9.9"
 python-dotenv = "^1.0.1"
 click = "^8.1.7"
 faker = "^23.2.1"
+passlib = "^1.7.4"
 
 
 [build-system]
