@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SECRET_KEY = environ.get('SECRET_KEY')
     EXPIRE_MINUTES: int = environ.get('EXPIRE_MINUTES', default=5)
     ALGORITHM = environ.get('ALGORITHM')
+    REDIS_URI: str = environ.get('REDIS_URI')
 
 
 settings = Settings()
