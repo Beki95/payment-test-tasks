@@ -19,6 +19,7 @@ click = "^8.1.7"
 faker = "^23.2.1"
 passlib = "^1.7.4"
 python-jose = "^3.3.0"
+redis = "^5.0.1"
 
 
 [build-system]

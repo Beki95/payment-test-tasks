@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
 from src.infra.db import User
-from src.infra.repositories.common import CommonRepository
-from src.interfaces.repositories.users import (
+from src.infra.db.repositories.common import CommonRepository
+from src.interfaces.repositories.alchemy.users import (
     IUsersRepository,
 )
 

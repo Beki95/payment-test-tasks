@@ -5,8 +5,9 @@ from src.core import security
 from src.core.const import AC
 from src.core.security import verify_password
 from src.infra.db import User
-from src.interfaces.repositories.users import IUsersRepository
+from src.interfaces.repositories.alchemy.users import IUsersRepository
 from src.services.auth.request_dto import UserLoginRequest
+from src.services.common import LockoutManager
 from src.services.exceptions import AuthenticationError
 
 
@@ -16,8 +17,9 @@ class AuthorizationService:
     secure = True
     token_type = 'Bearer'
 
-    def __init__(self, repo: IUsersRepository):
+    def __init__(self, repo: IUsersRepository, lockout_manager: LockoutManager) -> None:
         self.repo = repo
+        self.lockout_manager = lockout_manager
 
     async def authenticate_user(self, username: str, password: str) -> None | User:
         user = await self.repo.get_user_by_username(username)
@@ -39,12 +41,17 @@ class AuthorizationService:
         return response
 
     async def authenticate(self, dto: UserLoginRequest, response: Response) -> Response:
+        await self.lockout_manager.check_access()
+
         if not (
                 user := await self.authenticate_user(username=dto.username, password=dto.password)
         ):
+            await self.lockout_manager.failed_attempts()
             raise AuthenticationError
+
         access_token = await security.create_jwt_token(user_id=user.id, scopes=None)
 
+        await self.lockout_manager.open_access()
         return await self.authorization_via_cookies(access_token=access_token, response=response)
 
 
