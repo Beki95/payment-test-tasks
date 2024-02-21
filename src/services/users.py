@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.core.security import hashing_secret
 from src.infra.db import User
-from src.interfaces.repositories.users import IUsersRepository
+from src.interfaces.repositories.alchemy.users import IUsersRepository
 
 
 class UserCreateService:
