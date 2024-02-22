@@ -4,7 +4,7 @@ from faker import Faker
 from src.core.database import sync_session_impl
 from src.infra.db.repositories.balance import BalanceRepository
 from src.infra.db.repositories.users import UserRepository
-from src.services.users import UserCreateService
+from src.services.users.users import UserCreateService
 
 fake = Faker()
 
