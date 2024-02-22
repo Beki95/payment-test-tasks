@@ -1,4 +1,5 @@
 import sqlalchemy as sa
+from sqlalchemy.orm import relationship
 
 from src.infra.db.tables.common import Base
 
@@ -22,4 +23,10 @@ class User(Base):
     password = sa.Column(
         sa.String(255),
         nullable=False,
+    )
+    balance = sa.orm.relationship(
+        "UserBalance",
+        lazy='joined',
+        uselist=False,
+        back_populates="user"
     )

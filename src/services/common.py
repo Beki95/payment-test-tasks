@@ -4,28 +4,36 @@ from datetime import (
 )
 
 from fastapi import (
+    Depends,
     Security,
 )
 from fastapi.security import APIKeyCookie
 from starlette.requests import Request
 
 from src.core import security
+from src.infra.db import User
 from src.infra.redis.models.blocked_id import BlockedIdModel
+from src.interfaces.repositories.alchemy.users import IUsersRepository
 from src.interfaces.repositories.redis._ip import IBlockedIPRepository
 from src.services.exceptions import (
     AccessDeniedError,
     TokenExpiredOrNotValid,
+    UserNotFoundError,
 )
 
 oauth2_scheme = APIKeyCookie(name='access_token')
 
 
-async def get_current_user(token: str = Security(oauth2_scheme)):  # -> user_id
+async def get_current_user(
+    token: str = Security(oauth2_scheme), user_repo: IUsersRepository = Depends()
+) -> User:
     try:
-        payload = await security.decode_jwt_token(token)
+        user_id = await security.decode_jwt_token(token)
+        if user := await user_repo.get_user_by_id(user_id=user_id):
+            return user
+        raise UserNotFoundError
     except ValueError:
-        raise TokenExpiredOrNotValid()
-    return payload
+        raise TokenExpiredOrNotValid
 
 
 class LockoutManager:
