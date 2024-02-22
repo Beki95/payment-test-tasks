@@ -8,3 +8,7 @@ class AuthenticationError(Exception):
 
 class AccessDeniedError(Exception):
     message: str = "Access Denied"
+
+
+class UserNotFoundError(Exception):
+    message: str = "User not found"
