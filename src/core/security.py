@@ -51,4 +51,4 @@ async def decode_jwt_token(jwt_token: str) -> dict:
     except (JWTError, JWTClaimsError, ExpiredSignatureError) as e:
         raise ValueError(e)
 
-    return payload
+    return user_id
