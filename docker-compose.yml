@@ -6,7 +6,7 @@ volumes:
 services:
   postgres: # Test
     image: "postgres:14.1-alpine"
-    hostname: postgresql
+    container_name: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: "redis:7.2.4-alpine"
-    hostname: redis
+    container_name: redis
     restart: always
     ports:
       - '6379:6379'

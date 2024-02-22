@@ -27,5 +27,9 @@ RUN poetry install --no-root --no-dev
 
 ADD alembic.ini $ROOT/
 ADD .env $ROOT/
+COPY src $ROOT/src
+
+RUN alembic upgrade head
+
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
