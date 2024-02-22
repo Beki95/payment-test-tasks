@@ -2,6 +2,7 @@ import click
 from faker import Faker
 
 from src.core.database import sync_session_impl
+from src.infra.db.repositories.balance import BalanceRepository
 from src.infra.db.repositories.users import UserRepository
 from src.services.users import UserCreateService
 
@@ -16,7 +17,8 @@ fake = Faker()
 def insert_user(username: str, password: str, first_name: str, last_name: str) -> None:
     session = sync_session_impl()
     repo = UserRepository(session=session)
-    service = UserCreateService(repo=repo, session=session)
+    balance_repo = BalanceRepository(session=session)
+    service = UserCreateService(repo=repo, balance_repo=balance_repo, session=session)
     service.execute(
         username=username,
         password=password,
