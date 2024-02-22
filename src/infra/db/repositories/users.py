@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy import select
 
 from src.infra.db import User
@@ -16,6 +18,14 @@ class UserRepository(CommonRepository, IUsersRepository):
         query = (
             select(User)
             .where(User.username == username)
+        )
+        result = await self.session.execute(query)
+        return result.scalars().first()
+
+    async def get_user_by_id(self, user_id: UUID):
+        query = (
+            select(User)
+            .where(User.id == user_id)
         )
         result = await self.session.execute(query)
         return result.scalars().first()
