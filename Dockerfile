@@ -14,6 +14,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends gcc \
   && apt-get install -y --no-install-recommends gettext \
   && apt-get install -y --no-install-recommends vim \
+  && apt-get update && apt-get install -y zsh \
   && apt-get clean
 
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python && \
@@ -29,7 +30,11 @@ ADD alembic.ini $ROOT/
 ADD .env $ROOT/
 COPY src $ROOT/src
 
-RUN alembic upgrade head
+RUN apt-get update && apt-get install -y zsh
+
+COPY start.sh $ROOT/start.sh
+RUN chmod +x $ROOT/start.sh
+ENV PATH="$ROOT:$PATH"
 
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["start.sh"]
