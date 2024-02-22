@@ -22,7 +22,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 
-config.set_main_option('sqlalchemy.url', settings.POSTGRES_URI)
+config.set_main_option('sqlalchemy.url', settings.POSTGRES_URI.replace('+asyncpg', ''))
 
 
 # other values from the config, defined by the needs of env.py,
